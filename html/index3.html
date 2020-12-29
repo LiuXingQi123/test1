@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="checkAnti">反选</button>
+    <button @click="checkAll">全选</button>
+    <button @click="checkNone">全不选</button>
+
+    喜好:
+   
+    <!-- <div v-for="(item,idx) in checkArr">
+      <input type="checkbox" value="" :checked="checkArr[idx]">
+    </div> -->
+
+    <div v-for="(item,idx) in inputArr">
+      <input type="checkbox" value="" :checked="item.checked">
+    </div>
+
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  new Vue({
+    el: "#app",
+    data: function () {
+      return {
+        inputArr: [
+          { text: '足球', checked: true },
+          { text: '篮球', checked: false },
+          { text: '羽毛球', checked: false },
+          { text: '游泳', checked: false },
+        ],
+
+        // checkArr: [true, false, false, false],
+      }
+    },
+    methods: {
+      checkNone() {
+        this.inputArr.forEach(item => {
+          item.checked = false;
+        });
+
+        // this.checkArr = this.checkArr.map(item => item = false); 
+      },
+      checkAll() {
+        this.inputArr.forEach(item => {
+          item.checked = true;
+        });
+
+        // this.checkArr = this.checkArr.map(item => item = true); 
+      },
+      checkAnti() {
+        this.inputArr.forEach(item => {
+          item.checked = !item.checked;
+        });
+
+        // this.checkArr = this.checkArr.map(item => item = !item); 
+      }
+    }
+  })
+
+</script>
+
+</html>

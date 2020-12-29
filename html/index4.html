@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div id="app">
+            <div v-for="list,index in lists">
+                <label :for="index">
+                    {{list.name}}<input :id="index" type="checkbox" :value="list.name" v-model="checkboxArr"> //这里注意list.name这个值一定要和checkAll函数中绑定的红色的值要一样
+                </label>
+            </div>
+        <label>
+            <input type="checkbox" class="checkbox" @click="selectAll" />{{checkAllAddTxt}}
+        </label>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        window.onload = function () {
+            var c = new Vue({
+                el: '#app',
+                data: {
+                    checkboxArr: [],
+                    lists: [{ // lists是从接口拿到的要遍历带有checkbox的数据
+                        'name': '111'
+                    }, {
+                        'name': '222'
+                    }, {
+                        'name': '333'
+                    }, {
+                        'name': '444'
+                    }],
+                    checkAllAddTxt: '全选' // 作为全选 取消全选的显示文字
+                },
+                methods: {
+                    selectAll: function (event) {
+                        var _this = this;
+                        if (!event.currentTarget.checked) {
+                            this.checkboxArr = []; // 取消全选
+                            this.checkAllAddTxt = '全选';
+                        } else { // 实现全选
+                            _this.checkboxArr = [];
+                            _this.lists.forEach(function (list, i) {
+                                _this.checkboxArr.push(list.name);
+                            });
+                            this.checkAllAddTxt = '取消全选';
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>

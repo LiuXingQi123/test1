@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="vueContainer">
+			<div>
+				<input type='checkbox' class='input-checkbox' :checked="fruitIds.length === fruits.length" @click='checkedAll()'>全选
+				<div v-for='(fruit, index) in fruits' :key="index">
+					<!--判断fruitIds是否包含当前fruit，fruitIds.indexOf(fruit.fruitId)返回包含fruit的下标, 若不包含则返回-1-->
+					<input type='checkbox' :checked="fruitIds.indexOf(fruit.fruitId) > -1" name='checkboxinput' class='input-checkbox' @click='checkedOne(fruit.fruitId)'> {{fruit.value}}
+				</div>
+				<!--默认删除按钮不能点击, 当选中某一checkbox时可以删除-->
+				<button :disabled="!fruitIds.length>0" value="Delete" @click="deleteFruits()">Delete</button>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.12.4.js" ></script>
+	<script type="text/javascript" src="../js/vue.js" ></script>
+	<script>
+		var vue = new Vue({
+		        el: "#vueContainer",
+		        data: {
+		            fruits:[{
+		                    fruitId:'1',
+		                    value:'苹果'
+		                },{
+		                    fruitId:'2',
+		                    value:'荔枝'
+		                },{
+		                    fruitId:'3',
+		                    value:'香蕉'
+		                },{
+		                    fruitId:'4',
+		                    value:'火龙果'
+		                }
+		            ],
+		            fruitIds:['1','3','4'],
+		            isCheckedAll: false
+		        },
+		        methods:{
+		            checkedOne (fruitId) {
+		                let idIndex = this.fruitIds.indexOf(fruitId)
+		                if (idIndex >= 0) {
+		                    // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
+		                    this.fruitIds.splice(idIndex, 1)
+		                } else {
+		                    // 选中该checkbox
+		                    this.fruitIds.push(fruitId)
+		                }
+		            },
+		            checkedAll () {
+		                this.isCheckedAll = !this.isCheckedAll
+		                if (this.isCheckedAll) {
+		                    // 全选时
+		                    this.fruitIds = []
+		                    var _that = this
+		                    // 此写法 其实就是异步函数 this 的指向问题，传入一个this参数
+		//                  this.fruits.forEach(function (fruit) {
+		//                  	console.log(fruit)
+		//                      this.fruitIds.push(fruit.fruitId)
+		//                  },this)
+							this.fruits.forEach((val,index) =>{
+								this.fruitIds.push(val.fruitId)
+							})
+		                } else {
+		                    this.fruitIds = []
+		                }
+		            },
+		            deleteFruits () {
+		            	var newDate = [];
+						this.fruits.forEach((val,index) => {
+							console.log(!(this.fruitIds.indexOf(val.fruitId) != -1))
+							if (!(this.fruitIds.indexOf(val.fruitId) != -1)) {
+								newDate.push(val)
+							}
+							
+						})
+						this.fruits = newDate;
+						this.fruitIds = [];
+		//				var arr = [];
+		//		        var len = this.fruits.length;
+		//		        for(var i=0;i<len;i++){
+		//		            if(this.fruitIds.indexOf(this.fruits[i].fruitId)>=0){
+		//		                console.log(this.fruitIds.indexOf(i));
+		//		            }else {
+		//		                console.log(this.fruits[i]);
+		//		                arr.push(this.fruits[i]);
+		//		            }
+		//		        }
+		//		        this.fruits = arr;
+		//		        this.fruitIds = [];
+		    		}
+		        }
+		    });
+	</script>
+
+</html>
